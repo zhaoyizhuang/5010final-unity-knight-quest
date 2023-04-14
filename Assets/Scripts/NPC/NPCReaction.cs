@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class NPCReaction : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class NPCReaction : MonoBehaviour
     [SerializeField] private Reputation reputation;
     public Text npcName;
     public Text currentMsg;
+    public int nextScene;
+    public bool finalScene = false;
 
     private Animator animator;
     private Queue<string> msgQ;
@@ -38,6 +41,7 @@ public class NPCReaction : MonoBehaviour
     }
 
     private void PopulateMsg() {
+        Debug.Log(reputation.reputationLevel);
         msgQ.Clear();
         if (reputation.reputationLevel == 0) {
             FirstTalk();
@@ -62,9 +66,22 @@ public class NPCReaction : MonoBehaviour
         }
     }
 
+    IEnumerator SwitchScene(int scene) {
+        yield return SceneManager.LoadSceneAsync(scene);
+    }
+
     public void NextMsg() {
         if (msgQ.Count == 0) {
             meetNpc.EndConversation();
+            // if (reputation.reputationLevel == 0) {
+            //     StartCoroutine(SwitchScene(1));
+            // } else if (reputation.reputationLevel == 1) {
+            //     StartCoroutine(SwitchScene(0));
+            // }
+            if (finalScene) {
+                return;
+            }
+            StartCoroutine(SwitchScene(nextScene));
         } else {
             npcName.text = name;
             StopAllCoroutines();

@@ -5,8 +5,4 @@ using UnityEngine;
 public class Reputation : MonoBehaviour
 {
     public int reputationLevel;
-
-    void Start() {
-        reputationLevel = 0;
-    }
 }
