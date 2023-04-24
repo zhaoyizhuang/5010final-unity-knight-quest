@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RPG.Core
 {
@@ -19,6 +21,10 @@ namespace RPG.Core
             if (healthPoints == 0)
             {
                 Die();
+                if (this.gameObject.CompareTag("Player"))
+                {
+                    StartCoroutine(respawn());
+                }
             }
         }
 
@@ -29,6 +35,12 @@ namespace RPG.Core
             isDead = true;
             GetComponent<Animator>().SetTrigger("die");
             GetComponent<ActionScheduler>().CancelCurrentAction();
+        }
+
+        IEnumerator respawn()
+        {
+            yield return new WaitForSeconds(3);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
     
