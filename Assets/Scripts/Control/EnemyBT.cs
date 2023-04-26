@@ -21,21 +21,31 @@ namespace RPG.Control
             GameObject player = GameObject.FindWithTag("Player");
             Fighter fighter = GetComponent<Fighter>();
             ActionScheduler actionScheduler = GetComponent<ActionScheduler>();
+            Health health = GetComponent<Health>();
 
-            BlackBoard.Instance.tick["timeSinceLastSawPlayer"] = Mathf.Infinity;
+            tick["timeSinceLastSawPlayer"] = Mathf.Infinity;
+            tick["timeSinceLastHitByPlayer"] = Mathf.Infinity;
 
-            Node root = new Selector(new List<Node>
+            Node root = new Sequence(new List<Node>
             {
-                new Sequence(new List<Node> {
-                    new ConditionNodeInAttackRange(transform, player, fighter, chaseDistance),
-                    new ActionNodeAttack(player, fighter)
-                }),
-                new Sequence(new List<Node>
+                new ConditionNodeIsAlive(health),
+                new Selector(new List<Node>
                 {
-                    new ConditionNodeSuspicious(),
-                    new ActionNodeSuspicious(actionScheduler)
-                }),
-                new ActionNodePatrol(transform, patrolPath, mover)
+                    new Sequence(new List<Node> {
+                        new Selector(new List<Node>
+                        {
+                            new ConditionNodeInAttackRange(transform, player, fighter, chaseDistance),
+                            new ConditionNodeGetHit(tick, health)
+                        }),
+                        new ActionNodeAttack(player, fighter, tick)
+                    }),
+                    new Sequence(new List<Node>
+                    {
+                        new ConditionNodeSuspicious(tick),
+                        new ActionNodeSuspicious(actionScheduler)
+                    }),
+                    new ActionNodePatrol(transform, patrolPath, mover)
+                })
             });
 
             root.PrintTree();

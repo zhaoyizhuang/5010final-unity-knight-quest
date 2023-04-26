@@ -9,14 +9,26 @@ namespace RPG.Core
         public float healthPoints = 100f;
 
         bool isDead = false;
+        bool getHit = false;
 
         public bool IsDead()
         {
             return isDead;
         }
 
+        public void SetGetHit(bool value)
+        {
+            getHit = value;
+        }
+
+        public bool IsGetHit()
+        {
+            return getHit;
+        }
+
         public void TakeDamage(float damage)
         {
+            getHit = true;
             healthPoints = Mathf.Max(healthPoints - damage, 0);
             if (healthPoints == 0)
             {
