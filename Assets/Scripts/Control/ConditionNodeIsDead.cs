@@ -5,13 +5,13 @@ using UnityEngine;
 using RPG.Core;
 using BehaviorTree;
 
-public class ConditionNodeIsAlive : Node
+public class ConditionNodeIsDead : Node
 {
     private Health health;
 
-    public ConditionNodeIsAlive(Health health)
+    public ConditionNodeIsDead(Health health)
     {
-        this.name = "Is Alive Condition";
+        this.name = "Is Dead Condition";
         this.health = health;
     }
 
@@ -20,8 +20,8 @@ public class ConditionNodeIsAlive : Node
         //Debug.Log(this.name);
         if (health.IsDead())
         {
-            return State.FAILURE;
+            return State.SUCCESS;
         }
-        return State.SUCCESS;
+        return State.FAILURE;
     }
 }

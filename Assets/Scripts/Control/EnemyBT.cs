@@ -28,7 +28,10 @@ namespace RPG.Control
 
             Node root = new Sequence(new List<Node>
             {
-                new ConditionNodeIsAlive(health),
+                new Decorator(new List<Node>
+                {
+                    new ConditionNodeIsDead(health)
+                }, reverse),
                 new Selector(new List<Node>
                 {
                     new Sequence(new List<Node> {
@@ -50,6 +53,12 @@ namespace RPG.Control
 
             root.PrintTree();
             return root;
+        }
+
+        private State reverse(State state)
+        {
+            if (state == State.SUCCESS) return State.FAILURE;
+            else return State.SUCCESS;
         }
     }
 }
