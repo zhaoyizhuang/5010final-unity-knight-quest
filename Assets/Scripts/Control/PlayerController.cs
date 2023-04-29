@@ -11,6 +11,8 @@ namespace RPG.Control
     {
 
         [SerializeField] GameObject ClickIndicator;
+        [SerializeField]
+        private LayerMask FloorLayers;
         GameObject ActiveIndicator;
         Health health;
 
@@ -118,7 +120,8 @@ namespace RPG.Control
         {
             // Mouse left click
             RaycastHit hit;
-            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
+            bool hasHit = Physics.Raycast(GetMouseRay(), out hit, float.MaxValue, FloorLayers);
+            //bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
             if (hasHit)
             {
                 if (Input.GetMouseButton(0))
