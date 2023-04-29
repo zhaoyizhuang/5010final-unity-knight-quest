@@ -22,7 +22,7 @@ public class chase : MonoBehaviour
         if (distance < 1.5)
         {
             Debug.Log("catch!");
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(3);
         }
     }
 }

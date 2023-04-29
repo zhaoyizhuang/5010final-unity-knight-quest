@@ -5,6 +5,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyMovement : MonoBehaviour
 {
+    /**
+     * Reference: https://www.youtube.com/playlist?list=PLllNmP7eq6TSkwDN8OO0E8S6CWybSE_xC
+     * **/
     //[HideInInspector]
     public Transform Player;
     public LayerMask HidableLayers;
